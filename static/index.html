@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仕様道場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<!-- S1 プロジェクト一覧 -->
+<section id="s1" class="app" hidden>
+  <header>
+    <span class="brand">仕様道場</span>
+    <span class="sp"></span>
+    <input type="text" id="newName" placeholder="作りたいアプリの名前(例:サークルの出欠アプリ)">
+    <button class="primary" id="createBtn">新規作成</button>
+  </header>
+  <div class="pane">
+    <table class="list">
+      <thead><tr><th>名前</th><th>工程</th><th>進み具合</th><th>更新日</th><th></th></tr></thead>
+      <tbody id="projectRows"></tbody>
+    </table>
+    <p id="emptyList" class="gloss" hidden>まだプロジェクトがありません。上の欄に作りたいアプリの名前を入れて「新規作成」を押してください。</p>
+    <p><label class="gloss"><input type="checkbox" id="showArchived"> アーカイブ(しまったもの)を表示</label></p>
+  </div>
+</section>
+
+<!-- S2 作業画面 -->
+<section id="s2" class="app" hidden>
+  <header>
+    <button id="backBtn">← 一覧</button>
+    <span class="brand">仕様道場</span>
+    <span class="crumb" id="projName"></span>
+    <span class="sp"></span>
+    <div class="seg" role="group" aria-label="モード">
+      <button id="mGuided" aria-pressed="true">ガイド付き</button>
+      <button id="mFree" aria-pressed="false">自由チャット</button>
+    </div>
+    <button id="reviewBtn">レビューして <span class="count" id="unrev"></span></button>
+    <div class="menu">
+      <button id="outBtn" aria-expanded="false">出力 ▾</button>
+      <div class="dd" id="outMenu" hidden>
+        <button data-out="xlsx">Excelで書き出す</button>
+        <button data-out="md">Markdownで書き出す</button>
+        <button data-out="zip">zipでダウンロード</button>
+        <button data-out="folder">フォルダに書き出して開く</button>
+      </div>
+    </div>
+  </header>
+  <div class="body">
+    <aside id="aside"></aside>
+    <main>
+      <div class="tabs" role="tablist">
+        <button role="tab" data-tab="talk" aria-selected="true">対話</button>
+        <button role="tab" data-tab="doc" aria-selected="false">資料</button>
+        <button role="tab" data-tab="tree" aria-selected="false">ツリー図</button>
+        <button role="tab" data-tab="gloss" aria-selected="false">用語集</button>
+      </div>
+      <div id="confirmBar" class="confirm" hidden></div>
+      <div class="pane" id="pane"></div>
+      <div class="status"><span id="busy"></span><span>入力内容はAIの会社(Anthropic)に送られます</span></div>
+    </main>
+  </div>
+</section>
+<div class="toast" id="toast" hidden></div>
+<script src="/app.js"></script>
+</body>
+</html>

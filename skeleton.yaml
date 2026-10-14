@@ -1,0 +1,78 @@
+# 骨組み:工程と必須項目、その依存関係(基本設計書 3 テーブル定義の item_key と対応)
+# depends_on に書いた項目を変えると、この項目に「要確認」が付く
+phases:
+  - key: requirements
+    label: 要件定義
+    doc_title: 要件定義書
+    items:
+      - key: requirements.purpose
+        label: 目的
+        guide: このシステムは誰の何を良くするのかを1文で決める。あとの全部の判断の物差しになる
+      - key: requirements.users
+        label: 利用者
+        guide: 誰が使うのか、どのくらい詳しい人なのかを決める
+        depends_on: [requirements.purpose]
+      - key: requirements.scene
+        label: 利用場面
+        guide: いつ、どこで、どの端末で、どのくらいの時間使うのかを決める
+        depends_on: [requirements.users]
+      - key: requirements.functions
+        label: 機能要件
+        guide: システムが「何をするか」を並べる
+        depends_on: [requirements.purpose, requirements.users, requirements.scene]
+      - key: requirements.nonfunctional
+        label: 非機能要件
+        guide: 速さ、安全さ、データの扱いなど「どの程度か」を数字や条件で決める
+        depends_on: [requirements.scene, requirements.functions]
+      - key: requirements.out_of_scope
+        label: 対象外
+        guide: やらないことを決める。範囲が広がり続けるのを防ぐ
+        depends_on: [requirements.functions]
+      - key: requirements.constraints
+        label: 制約
+        guide: 予算、納期、使う技術など、自分では動かせない条件
+        depends_on: [requirements.purpose]
+  - key: concept
+    label: 構想設計
+    doc_title: 構想設計書
+    items:
+      - key: concept.system
+        label: システム構成
+        guide: どんな部品(画面、サーバー、データの置き場所)で組み立てるか
+        depends_on: [requirements.scene, requirements.constraints]
+      - key: concept.screens
+        label: 画面の大まかな構成
+        guide: 画面をいくつに分けて、どう行き来するか
+        depends_on: [requirements.functions, requirements.scene]
+      - key: concept.data
+        label: データの大まかな種類
+        guide: どんなデータを持ち、どこに置くか
+        depends_on: [requirements.functions]
+      - key: concept.flow
+        label: 処理の流れ
+        guide: 中心となる操作が、どの順番で処理されるか
+        depends_on: [requirements.functions, concept.system]
+      - key: concept.external
+        label: 外部とのつながり
+        guide: ほかのサービスやシステムとつながるか、どうつながるか
+        depends_on: [requirements.functions, requirements.constraints]
+  - key: basic
+    label: 基本設計
+    doc_title: 基本設計書
+    items:
+      - key: basic.screen_items
+        label: 画面の項目
+        guide: 各画面に置くボタン、入力欄、表示を決める
+        depends_on: [concept.screens]
+      - key: basic.tables
+        label: テーブル定義
+        guide: データを保存する表と、その列を決める
+        depends_on: [concept.data]
+      - key: basic.apis
+        label: API一覧
+        guide: 画面とサーバーのあいだで、どんなやりとりをするか
+        depends_on: [basic.screen_items, basic.tables]
+      - key: basic.errors
+        label: エラー時の動き
+        guide: 失敗したとき、利用者に何を見せて、データをどう守るか
+        depends_on: [requirements.nonfunctional, concept.flow]

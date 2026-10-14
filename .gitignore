@@ -6,3 +6,5 @@ run_log.txt
 err.log
 out.log
 output/
+.claude/
+.pytest_cache/
