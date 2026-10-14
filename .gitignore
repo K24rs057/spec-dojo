@@ -5,3 +5,4 @@ __pycache__/
 run_log.txt
 err.log
 out.log
+output/
