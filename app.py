@@ -325,7 +325,7 @@ def create_app(store, runner, output_dir=OUTPUT):
     return app
 
 
-def free_port(start=8790):
+def free_port(start=8795):
     for port in range(start, start + 20):
         with socket.socket() as s:
             if s.connect_ex(("127.0.0.1", port)) != 0:
@@ -347,6 +347,10 @@ def open_browser(url):
 
 def main():
     import uvicorn
+    if sys.stdout is None:
+        # pythonw で起動すると出力先がなく、uvicorn のログ設定で落ちる。data/server.log に書く
+        DATA.mkdir(parents=True, exist_ok=True)
+        sys.stdout = sys.stderr = open(DATA / "server.log", "a", encoding="utf-8", buffering=1)
     store = Store(DATA / "spec-dojo.db")
     app = create_app(store, JobRunner(ClaudeCLI(DATA / "ai-workdir")))
     port = free_port()
