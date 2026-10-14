@@ -1,0 +1,7 @@
+.env
+data/
+__pycache__/
+*.pyc
+run_log.txt
+err.log
+out.log
